@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html ng-app='redditApp'>
+  <head>
+    <title>Clone It Up</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0-beta.1/angular.min.js"></script>
+  </head>
+  <body>
+  <div ng-controller='globalController'>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Los Reddit Clone</a>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+            <li><button type='button' ng-click='submitPost = !submitPost'><span class='glyphicon glyphicon-pencil'></span> Submit Post </button></li>
+          </ul>
+          <form class="navbar-form navbar-left" role="search">
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="Search" ng-model='search'>
+            </div>
+            <button type="submit" class="btn btn-default">Submit</button>
+          </form>
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#">Sort By 
+          <span class="caret"></span></a>
+          <ul class='dropdown-menu'>
+            <li ng-click="sort='-votes'"> Votes </li>
+            <li ng-click="sort='date'"> Date </li>
+            <li ng-click="sort='title'"> Title </li>
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+    <form name='submitPost' ng-show='submitPost' ng-hide='!submitPost' role='form'>
+      <div> Title </div>
+      <input type='text' placeholder='Title' ng-model='post.title'>
+      <br>
+      <div> Author </div>
+      <input type='text' placeholder='Author' ng-model='post.author'>
+      <br>
+      <div> Image URL </div>
+      <input type='text' placeholder='Image URL' ng-model='post.imageUrl'>
+      <div>Description</div>
+      <input type='text' placeholder='Description' ng-model='post.description'>
+      <div></div>
+      <button type='submit' ng-click='movePostObject(post);submitPost = !submitPost'>Submit</button>
+    </form>
+    <div ng-repeat='post in postArray | orderBy: sort | filter: search' class='containPosts'>
+      <div class='row'>
+        <div class='col-xs-3'><img src='{{post.imageUrl}}'></div>
+        <div class='col-xs-9'>
+          <h1>{{post.title}} | <button ng-click='upVote()'><span class='glyphicon glyphicon-arrow-up'></span></button><button ng-click='downVote()'><span class='glyphicon glyphicon-arrow-down'></span></button><span ng-class='{red: post.votes < 0,green: post.votes > 0}'>{{post.votes}}</span></h1>
+          <p class='authorOnPost'>{{post.author}}</p>
+          <p>{{post.description}}</p>
+          <div class='footer'>
+            <span class='glyphicon glyphicon-calendar'></span> Date | <button class='showComment' ng-click='showComment = !showComment'><span class='glyphicon glyphicon-comment'></span></button>C0mm3nts
+            | <button class='writeComment' ng-click='submitComment = !submitComment'><span class='glyphicon glyphicon-pencil'></span> </button> Add A Comment
+          </div>
+        </div>
+      </div>
+    </div>
+      <div ng-controller='commentController'>
+        <div class= 'row'>
+          <div class='col-xs-12'>
+            <form name='submitComment' ng-show='!submitComment' ng-hide='submitComment' role='form'>
+              <p>Write your comment</p>
+              <input type="textarea" ng-model='comment.text'>
+              <div></div>
+              <button type='submit' ng-click='moveCommentObject(comment);submitComment = !submitComment'>Submit</button>
+            </form>
+          </div>
+        </div>
+        <div class='comment' ng-show='showComment' ng-hide='!showComment'>
+          <div class='row'>
+            <div class='col-xs-12'>
+              <p>{{comment.text}}</p>
+              <br>
+              <button ng-click='showComment = !showComment'></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script type='text/javascript' src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+    <script type='text/javascript' src="app.js"></script>
+  </body>
+</html>
