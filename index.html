@@ -41,10 +41,10 @@
             <li ng-click="sort='date'"> Date </li>
             <li ng-click="sort='title'"> Title </li>
           </ul>
-        </div><!-- /.navbar-collapse -->
-      </div><!-- /.container-fluid -->
+        </div>
+      </div>
     </nav>
-    <form name='submitPost' ng-show='submitPost' ng-hide='!submitPost' role='form'>
+    <form name='submitPost' ng-show='!submitPost' role='form'>
       <div> Title </div>
       <input type='text' placeholder='Title' ng-model='post.title'>
       <br>
@@ -66,35 +66,40 @@
           <p class='authorOnPost'>{{post.author}}</p>
           <p>{{post.description}}</p>
           <div class='footer'>
-            <span class='glyphicon glyphicon-calendar'></span> Date | <button class='showComment' ng-click='showComment = !showComment'><span class='glyphicon glyphicon-comment'></span></button>C0mm3nts
-            | <button class='writeComment' ng-click='submitComment = !submitComment'><span class='glyphicon glyphicon-pencil'></span> </button> Add A Comment
+            <span class='glyphicon glyphicon-calendar'></span> Date | <button class='showComment' ng-click='toggleVisibleComments()'><span class='glyphicon glyphicon-comment'></span></button>C0mm3nts
+            | <button class='writeComment' ng-click='toggle()'><span class='glyphicon glyphicon-pencil'></span> </button> Add A Comment
           </div>
         </div>
       </div>
     </div>
-      <div ng-controller='commentController'>
-        <div class= 'row'>
+      <div class= 'row'>
           <div class='col-xs-12'>
-            <form name='submitComment' ng-show='!submitComment' ng-hide='submitComment' role='form'>
+            <form name='submitComment' role='form' ng-show='visible'>
               <p>Write your comment</p>
-              <input type="textarea" ng-model='comment.text'>
+              <input type="text" ng-model='comment.text'>
               <div></div>
-              <button type='submit' ng-click='moveCommentObject(comment);submitComment = !submitComment'>Submit</button>
+              <button type='submit' ng-click='moveCommentObject(comment);toggle()'>Submit</button>
             </form>
           </div>
         </div>
-        <div class='comment' ng-show='showComment' ng-hide='!showComment'>
-          <div class='row'>
-            <div class='col-xs-12'>
-              <p>{{comment.text}}</p>
+        <div class='row'>
+          <div class='comment' ng-show='showCommentsVisible'>
+            <div class='col-med-12'>
+              <div ng-repeat='comment in commentArray'>
+              <ul>
+                <li><h1>{{comment.text}}</h1></li>
+              </ul>
               <br>
-              <button ng-click='showComment = !showComment'></button>
+              <button ng-click='toggleVisibleComments()'></button>
+              </div>
             </div>
           </div>
         </div>
       </div>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script type='text/javascript' src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
     <script type='text/javascript' src="app.js"></script>
+
   </body>
 </html>
